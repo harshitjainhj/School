@@ -3,6 +3,8 @@ package com.practice.School.services;
 import java.util.List;
 import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
+
+import com.practice.School.exceptions.StudentNotFoundException;
 import org.springframework.stereotype.Service;
 import com.practice.School.entities.Student;
 import com.practice.School.repos.StudentRepository;
@@ -26,8 +28,9 @@ public class StudentService {
     }
     
 //    get student by Id
-    public Optional<Student> getStudentById(int id) {
-        return repository.findById(id);
+    public Student  getStudentById(int id) {
+        return repository.findById(id).orElseThrow(()-> new StudentNotFoundException("Student not found by the id: " +id) );
+        
     }
 
 //    update student
