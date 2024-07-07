@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.practice.School.entities.Student;
 import com.practice.School.exceptions.StudentNotFoundException;
-import com.practice.School.services.StudentService;
+import com.practice.School.services.StudentServiceImpl;
 
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -27,7 +27,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 public class StudentController {
 
 	@Autowired
-	private StudentService service;
+	private StudentServiceImpl service;
 
 	@PostMapping
 	public ResponseEntity<Student> createStudent(@RequestBody Student student) {
@@ -43,9 +43,18 @@ public class StudentController {
 	}
 
 	@GetMapping("/{id}")
-	public Student getStudentById(@PathVariable int id) {
+	public ResponseEntity<?> getStudentById(@PathVariable int id) {
 
-		return service.getStudentById(id);
+		try {
+			Optional<Student> student=service.getStudentById(id);
+			return ResponseEntity.ok(student);
+ 		}
+		catch(StudentNotFoundException ex){
+			
+			return new ResponseEntity<>(ex.getMessage(),HttpStatus.NOT_FOUND);
+			
+		}
+
 	}
 
 	@ExceptionHandler(StudentNotFoundException.class)
