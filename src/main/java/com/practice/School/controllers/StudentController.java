@@ -46,13 +46,12 @@ public class StudentController {
 	public ResponseEntity<?> getStudentById(@PathVariable int id) {
 
 		try {
-			Optional<Student> student=service.getStudentById(id);
+			Optional<Student> student = service.getStudentById(id);
 			return ResponseEntity.ok(student);
- 		}
-		catch(StudentNotFoundException ex){
+		} catch (StudentNotFoundException ex) {
 			
-			return new ResponseEntity<>(ex.getMessage(),HttpStatus.NOT_FOUND);
-			
+			return new ResponseEntity<>(ex.getMessage(), HttpStatus.NOT_FOUND);
+
 		}
 
 	}
